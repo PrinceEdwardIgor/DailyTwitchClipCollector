@@ -1,26 +1,27 @@
 package com.DailyTwitchClipCollector.DailyTwitchClipCollector.Job;
 
 import org.quartz.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.quartz.impl.StdSchedulerFactory;
+import org.springframework.context.annotation.Configuration;
 
+@Configuration
 public class QuartzManager {
-    @Autowired
-    SchedulerFactory schedulerFactory;
-
+    SchedulerFactory schedulerFactory = new StdSchedulerFactory();
     private Scheduler scheduler;
 
-    public QuartzManager(){
+    public void sceduleJob(JobDetail job, Trigger trigger){
         try{
             this.scheduler = schedulerFactory.getScheduler();
+            this.scheduler.scheduleJob(job, trigger);
         }catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void sceduleJob(JobDetail job, Trigger trigger){
+    public void start(){
         try{
-            this.scheduler.scheduleJob(job, trigger);
-        }catch (Exception e) {
+            this.scheduler.start();
+        }catch (SchedulerException e){
             e.printStackTrace();
         }
     }

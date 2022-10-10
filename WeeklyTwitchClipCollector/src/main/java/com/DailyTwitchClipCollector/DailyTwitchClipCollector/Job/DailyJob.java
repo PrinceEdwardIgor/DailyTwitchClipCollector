@@ -14,8 +14,8 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class DailyJob implements Job {
@@ -26,6 +26,7 @@ public class DailyJob implements Job {
         String jsonResponseWithoutPagination = (jsonResponse.substring(jsonResponse.indexOf('['), jsonResponse.indexOf(']')+1));
         Type listType = new TypeToken<List<TwitchClipResponseData>>(){}.getType();
         List<TwitchClipResponseData> listOfTwitchClip = gson.fromJson(jsonResponseWithoutPagination, listType);
+        listOfTwitchClip.forEach(t->System.out.println(t.getUrl()));
         //TODO
         //retrieve list of url from twitch
         //download twitch clip
@@ -44,15 +45,15 @@ public class DailyJob implements Job {
         String to = "2022-10-09T00:00:00Z";
         try {
             url = new URL(urlStringBuilder(gameID, from, to));
-//            url = new URL("https://api.twitch.tv/helix/clips?game_id=33214&started_at=2022-10-02T00:00:00Z&ended_at=2022-10-09T00:00:00Z");
+            //url = new URL("https://api.twitch.tv/helix/clips?game_id=33214&started_at=2022-10-02T00:00:00Z&ended_at=2022-10-09T00:00:00Z");
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         HttpURLConnection http = null;
         try {
             http = (HttpURLConnection)url.openConnection();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         http.setRequestProperty("Authorization", Dict.APP_ACCESS_TOKEN);
         http.setRequestProperty("Client-Id", Dict.CLIENT_ID);
@@ -65,15 +66,16 @@ public class DailyJob implements Job {
                 br = new BufferedReader(new InputStreamReader(http.getErrorStream()));
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         StringBuilder sb = new StringBuilder();
-        String output;
+        String output = "";
         while (true) {
             try {
-                if (!((output = br.readLine()) != null)) break;
+                output = br.readLine();
+                if (output == null) break;
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                e.printStackTrace();
             }
             sb.append(output);
         }

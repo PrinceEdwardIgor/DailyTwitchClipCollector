@@ -1,9 +1,10 @@
 package com.DailyTwitchClipCollector.DailyTwitchClipCollector.Util;
 
 public final class Dict {
-    public static final String DAILY_CRON = "";
+    private Dict(){}
 
-    public static final String TEST_CRON = "";
+    public static final String DAILY_CRON = "0 0 * * *";
+    public static final String TEST_CRON = "0 * * * * ?";
     public static final String TWITCH_CLIP_URL = "https://api.twitch.tv/helix/clips?";
     public static final String GAME_ID_PREFIX = "game_id=";
     public static final String FROM_DATE_PREFIX = "&started_at=";
