@@ -2,11 +2,13 @@ package com.DailyTwitchClipCollector.DailyTwitchClipCollector.Data;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class TwitchClipResponseData {
     private String clipID;
     private String url;

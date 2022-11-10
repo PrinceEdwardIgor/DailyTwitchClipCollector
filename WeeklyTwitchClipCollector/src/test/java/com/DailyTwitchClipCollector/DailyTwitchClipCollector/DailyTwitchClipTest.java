@@ -1,5 +1,6 @@
 package com.DailyTwitchClipCollector.DailyTwitchClipCollector;
 
+import com.DailyTwitchClipCollector.DailyTwitchClipCollector.Data.GetTwitchClipResponseData;
 import com.DailyTwitchClipCollector.DailyTwitchClipCollector.Data.TwitchClipResponseData;
 import com.DailyTwitchClipCollector.DailyTwitchClipCollector.Util.Dict;
 import com.google.gson.Gson;
@@ -18,15 +19,13 @@ import java.util.List;
 
 @SpringBootTest
 public class DailyTwitchClipTest {
-
     Gson gson = new Gson();
     @Test
     public void twitchClipTest(){
         String jsonResponse = getDailyTwitchClip();
-        String jsonResponseWithoutPagination = (jsonResponse.substring(jsonResponse.indexOf('['), jsonResponse.indexOf(']')+1));
-        Type listType = new TypeToken<List<TwitchClipResponseData>>(){}.getType();
-        List<TwitchClipResponseData> listOfTwitchClip = gson.fromJson(jsonResponseWithoutPagination, listType);
-        listOfTwitchClip.forEach(t->System.out.println("this is the url" + t.getUrl()));
+//        String jsonResponseWithoutPagination = (jsonResponse.substring(jsonResponse.indexOf('['), jsonResponse.indexOf(']')+1));
+        GetTwitchClipResponseData getTwitchClipResponseData = gson.fromJson(jsonResponse, GetTwitchClipResponseData.class);
+        getTwitchClipResponseData.getData().forEach(t->System.out.println("this is the url" + t.getUrl()));
     }
 
     private String getDailyTwitchClip(){
